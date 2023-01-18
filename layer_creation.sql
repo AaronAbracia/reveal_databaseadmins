@@ -1,0 +1,133 @@
+-- Create schema data_model
+CREATE SCHEMA data_model;
+
+-- Create tables using a nested loop
+DO $$
+DECLARE
+    i INT := 1;
+    j INT := 1;
+    table_name TEXT;
+    project_prefixes TEXT[] := ARRAY['project_WE', 'project_Chorus','project_other_NUO'];
+    table_suffixes TEXT[] := ARRAY['line', 'point', 'polygon'];
+BEGIN
+    FOR i IN 1..array_length(project_prefixes,1) LOOP
+        FOR j IN 1..array_length(table_suffixes,1) LOOP
+            table_name := format('%s_%s', project_prefixes[i], table_suffixes[j]);
+            IF table_suffixes[j] = 'line' THEN
+                EXECUTE 'CREATE TABLE data_model.' || table_name || ' (id SERIAL PRIMARY KEY, 
+				asset_id uuid NOT NULL,
+				asset_operator character varying(80),
+				asset_owner character varying(80),
+				date_data_collected date,
+				feature_type character varying(255) NOT NULL,
+				measurement_units character varying(255),
+				operational_status character varying(255),
+				quality_level character varying(255),
+				system_load_date date,
+				utility_sub_type character varying(255),
+				utility_type character varying(255),
+				component_type character varying(80),
+				conveyance_category character varying(255),
+				conveyance_method character varying(255),
+				conveyance_shape character varying(255),
+				detection_method character varying(255),
+				depth_method character varying(255),
+				project_reference character varying(80),
+				qld_id character varying(1024),
+				reveal_asset_id character varying(80),
+				physical_label character varying(80),
+				outside_height real,
+				outside_width real,
+				surface_component character varying(255),
+				inside_height real,
+				inside_width real,
+				material character varying(80),
+				nuo_asset_id character varying(80),
+				nuo_criticality character varying(80),
+				nuo_asset_condition character varying(80),
+				wall_thickness real,
+				underground_status character varying(255),
+				surface_height real,
+				surface_width real,
+				surface_length real,				
+				geom GEOMETRY(LINESTRING, 2193, 3))';
+            ELSIF table_suffixes[j] = 'point' THEN
+                EXECUTE 'CREATE TABLE data_model.' || table_name || ' (id SERIAL PRIMARY KEY, 
+				asset_id uuid NOT NULL,
+				asset_operator character varying(80),
+				asset_owner character varying(80),
+				date_data_collected date,
+				feature_type character varying(255) NOT NULL,
+				measurement_units character varying(255),
+				operational_status character varying(255),
+				quality_level character varying(255),
+				system_load_date date,
+				utility_sub_type character varying(255),
+				utility_type character varying(255),
+				component_type character varying(80),
+				conveyance_category character varying(255),
+				conveyance_method character varying(255),
+				conveyance_shape character varying(255),
+				detection_method character varying(255),
+				depth_method character varying(255),
+				project_reference character varying(80),
+				qld_id character varying(1024),
+				reveal_asset_id character varying(80),
+				physical_label character varying(80),
+				outside_height real,
+				outside_width real,
+				surface_component character varying(255),
+				inside_height real,
+				inside_width real,
+				material character varying(80),
+				nuo_asset_id character varying(80),
+				nuo_criticality character varying(80),
+				nuo_asset_condition character varying(80),
+				wall_thickness real,
+				underground_status character varying(255),
+				surface_height real,
+				surface_width real,
+				surface_length real, 
+				geom GEOMETRY(POINT, 2193, 3))';
+            ELSE
+                EXECUTE 'CREATE TABLE data_model.' || table_name || ' (id SERIAL PRIMARY KEY, 
+				asset_id uuid NOT NULL,
+				asset_operator character varying(80),
+				asset_owner character varying(80),
+				date_data_collected date,
+				feature_type character varying(255) NOT NULL,
+				measurement_units character varying(255),
+				operational_status character varying(255),
+				quality_level character varying(255),
+				system_load_date date,
+				utility_sub_type character varying(255),
+				utility_type character varying(255),
+				component_type character varying(80),
+				conveyance_category character varying(255),
+				conveyance_method character varying(255),
+				conveyance_shape character varying(255),
+				detection_method character varying(255),
+				depth_method character varying(255),
+				project_reference character varying(80),
+				qld_id character varying(1024),
+				reveal_asset_id character varying(80),
+				physical_label character varying(80),
+				outside_height real,
+				outside_width real,
+				surface_component character varying(255),
+				inside_height real,
+				inside_width real,
+				material character varying(80),
+				nuo_asset_id character varying(80),
+				nuo_criticality character varying(80),
+				nuo_asset_condition character varying(80),
+				wall_thickness real,
+				underground_status character varying(255),
+				surface_height real,
+				surface_width real,
+				surface_length real,				
+				geom GEOMETRY(POLYGON, 2193, 3))';
+            END IF;
+        END LOOP;
+    END LOOP;
+END $$;
